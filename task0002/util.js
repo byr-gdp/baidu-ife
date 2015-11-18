@@ -165,3 +165,4 @@ function isSiblingNode(element, siblingNode) {
 function getPosition(element) {
   // 各种长宽意义
 }
+
