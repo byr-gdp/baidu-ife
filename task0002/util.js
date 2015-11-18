@@ -130,3 +130,38 @@ function isEmail(emailStr) {
 function isMobilePhone(phone) {
   // your implement
 }
+
+
+
+// 3. DOM
+
+// 为element增加一个样式名为newClassName的新样式
+function addClass(element, newClassName) {
+  var oldClassName = element.className;
+  element.className = oldClassName === "" ? newClassName : oldClassName + " " + newClassName; 
+}
+
+// 移除element中的样式oldClassName
+function removeClass(element, oldClassName) {
+  // element.classList 返回数组
+  // element.className 返回字符串
+  var oldClassList = element.classList;
+  var newClassName = "";
+  for(var i=0; i<oldClassList.length; i++) {
+    if(oldClassList[i] !== oldClassName) {
+      newClassName = newClassName + " " + oldClassList[i];
+    }
+  }
+  element.className = newClassName;
+}
+
+// 判断siblingNode和element是否为同一个父元素下的同一级的元素，返回bool值
+function isSiblingNode(element, siblingNode) {
+  // parentNode 和 parentElement 区别
+  return element.parentNode === siblingNode.parentNode;
+}
+
+// 获取element相对于浏览器窗口的位置，返回一个对象{x, y}
+function getPosition(element) {
+  // 各种长宽意义
+}
