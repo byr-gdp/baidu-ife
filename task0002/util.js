@@ -3,16 +3,16 @@ function isArray(arr) {
 
   // 实现一
   // return arr instanceof Array;
-  
+
   // 实现二
   // return arr.constructor === Array;
-  
+
   // 实现三
   return Object.prototype.toString.call(arr) === "[object Array]";
-  
+
   // 实现四 需要浏览器支持
   // if( typeof Array.isArray === 'Function')
-  return Array.isArray(arr);
+  // return Array.isArray(arr);
 
 }
 
@@ -69,7 +69,7 @@ function uniqArray(arr) {
   //     newArr.push(arr[i]);
   //   }
   // }
-  
+
   return newArr;
 }
 
@@ -92,8 +92,9 @@ function simpleTrim(str) {
 }
 
 // 很多同学肯定对于上面的代码看不下去，接下来，我们真正实现一个trim
-// 对字符串头尾进行空格字符的去除、包括全角半角空格、Tab等，返回一个字符串
+// 对字符串头尾进行空格字符的去除、包括全角半角空格、Tab等，返回一个字符串i
 // 尝试使用一行简洁的正则表达式完成该题目
+// 正则
 function trim(str) {
   if(str.length != -1) {
     return str.replace(/^\s+|\s+$/g, '');
@@ -116,7 +117,7 @@ function getObjectLength(obj) {
   // }
   // return len;
 
-  // 实现二  
+  // 实现二
   return Object.keys(obj).length;
 }
 
@@ -138,7 +139,9 @@ function isMobilePhone(phone) {
 // 为element增加一个样式名为newClassName的新样式
 function addClass(element, newClassName) {
   var oldClassName = element.className;
-  element.className = oldClassName === "" ? newClassName : oldClassName + " " + newClassName; 
+  element.className = oldClassName === "" ? newClassName : oldClassName + " " + newClassName;
+  // 以下有待验证
+  // element.className += " newClassName";
 }
 
 // 移除element中的样式oldClassName
@@ -166,3 +169,48 @@ function getPosition(element) {
   // 各种长宽意义
 }
 
+// 实现一个简单的Query
+function $(selector) {
+
+}
+
+
+
+// 4. 事件
+
+// 给一个element绑定一个针对event事件的响应，响应函数为listener
+function addEvent(element, event, listener) {
+    if(element.addEventListener) {
+        element.addEventListener(event, listener);
+    } else if(element.attachEvent) {
+        element.attachEvent("on" + event, listener);
+    }
+}
+
+// 移除element对象对于event事件发生时执行listener的响应
+function removeEvent(element, event, listener) {
+    if(element.removeEventListener) {
+         element.removeEventListener(event, listener);
+    } else if(element.detachEvent) {
+        element.detachEvent("on" + event, listener);
+    }
+}
+
+// 实现对click事件的绑定
+function addClickEvent(element, listener) {
+    if(element.addEventListener) {
+        element.addEventListener("click", listener);
+    } else if(element.attachEvent) {
+        element.attachEvent("onclick", listener);
+    }
+    // addEvent(element, "click", listener);
+}
+
+// 实现对于按Enter键时的事件绑定
+function addEnterEvent(element, listener) {
+    addEvent(element, "keydown", function(event) {
+        if(event.keyCode == 13) {
+            listener();
+        }
+    })
+}
