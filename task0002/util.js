@@ -198,19 +198,102 @@ function removeEvent(element, event, listener) {
 
 // 实现对click事件的绑定
 function addClickEvent(element, listener) {
-    if(element.addEventListener) {
-        element.addEventListener("click", listener);
-    } else if(element.attachEvent) {
-        element.attachEvent("onclick", listener);
-    }
-    // addEvent(element, "click", listener);
+  if(element.addEventListener) {
+    element.addEventListener("click", listener);
+  } else if(element.attachEvent) {
+    element.attachEvent("onclick", listener);
+  }
+  // addEvent(element, "click", listener);
 }
 
 // 实现对于按Enter键时的事件绑定
 function addEnterEvent(element, listener) {
-    addEvent(element, "keydown", function(event) {
-        if(event.keyCode == 13) {
-            listener();
-        }
-    })
+  addEvent(element, "keydown", function(event) {
+    if(event.keyCode == 13) {
+      listener();
+    }
+  });
 }
+
+// 事件代理
+function delegateEvent(element,tag,eventName,listener){
+  addEvent(element, eventName, function(event){
+    var target = event.target || event.srcElement;
+    if(target.tagName.toLowerCase() == tag.toLowerCase()) {
+      listener.call(target, event);
+    }
+  });
+}
+
+//估计有同学已经开始吐槽了，函数里面一堆$看着晕啊，那么接下来把我们的事件函数做如下封装改变：
+
+$.on(selector, event, listener) {
+  addEvent($(selector), event, listener);
+}
+
+$.click(selector, listener) {
+  addClickEvent($(selector), listener);
+}
+
+$.un(selector, event, listener) {
+  removeEvent($(selector), event, listener);
+}
+
+$.delegate(selector, tag, event, listener) {
+  delegateEvent($(selector), tag, event, listener);
+}
+
+// 5. BOM
+
+// 判断是否为IE浏览器，返回-1或者版本号
+function isIE() {
+  var ua = navigator.userAgent.toLowerCase();
+  console.log(ua);
+  // TODO
+}
+
+// 设置cookie
+function setCookie(cookieName, cookieValue, expiredays) {
+  var cookie = cookieName + "=" + cookieValue;
+  if(typeof expiredays === 'number') {
+    cookie += ";max-age=" + (expiredays * 60 * 60 * 24);
+  }
+  document.cookie = cookie;
+}
+
+// 获取所有 cookie 值
+function getAllCookie() {
+  var all = document.cookie;
+  var cookie = {};
+  if(all == "") {
+    return cookie;
+  }
+  var s = cookie.split(";");
+  for(var i = 0; i < s.length; i++) {
+    var p = s[i].indexOf("=");
+    var name = s[i].substr(0, p);
+    var value = s[i].substr(p + 1);
+    value = decodeURIComponent(value);
+    cookie[name] = value;
+  }
+  return cookie;
+}
+
+// 获取 cookie
+function getCookie(cookieName) {
+  var all = document.cookie;
+  var cookieValue;
+  if(all == "") {
+    return;
+  }
+  var s = cookie.split(";");
+  for(var i = 0; i < s.length; i++) {
+    var p = s[i].indexOf("=");
+    var name = s[i].substr(0, p);
+    if(name === cookieName) {
+      var value = s[i].substr(p + 1);
+      return decodeURIComponent(value);
+    }
+  }
+}
+
