@@ -297,3 +297,49 @@ function getCookie(cookieName) {
   }
 }
 
+// 6. AJAX
+
+function ajax(url, options) {
+  // var xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest : new ActiveXObject("Microsoft.XMLHTTP");
+  var xmlhttp;
+  if(window.XMLHttpRequest) {
+    xmlhttp = new XMLHttpRequest();
+  } else {
+    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
+  xmlhttp.onreadystatechange = function() {
+    if(xmlhttp.readyState == 4) {
+      if(xmlhttp.status == 200) {
+        if(options.onsuccess) {
+          options.onsuccess(xmlhttp.responseText, xmlhttp.responseXML);
+        }
+      } else {
+        if(options.onfail) {
+          options.onfail();
+        }
+      }
+    }
+  };
+
+  var method = options.type || "GET";
+  var url    = options.url;
+  var data;
+
+  if(typeof options.data === "object") {
+    var str = "";
+    for(var c in options.data) {
+      str += c + "=" + options.data[c] + "&";
+    }
+    str = str.substring(0, str.length - 1);
+    data = str;
+  }
+
+  xmlhttp.open(method, url, true);
+  if(method === "GET") {
+    xmlhttp.send(null);
+  } else {
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhr.send(data);
+  }
+}
